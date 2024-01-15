@@ -1,5 +1,5 @@
 {
-  "name": "apirest",
+  "name": "gabriell55575",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gabriel Lagrotteria <gabriellagrotteria18@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^8.3.1",
