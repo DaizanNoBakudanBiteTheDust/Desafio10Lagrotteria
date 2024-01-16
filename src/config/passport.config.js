@@ -23,8 +23,6 @@ const initializePassport = () => {
         scope:['user:email']
     }, async(accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile);
-           
             const email = profile.emails[0].value;
             const user = await usersModel.findOne({ email });
 
@@ -44,7 +42,7 @@ const initializePassport = () => {
             }         
         } catch (error) {
             
-            console.log(error)
+            req.logger.error(error)
 
         }
     }));

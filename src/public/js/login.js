@@ -24,6 +24,6 @@ form.addEventListener('submit', e => {
         }
     })
     .catch(error => {
-        console.error('Error en la petición fetch:', error);
+        req.logger.error('Error en la petición fetch:', error);
     });
 })

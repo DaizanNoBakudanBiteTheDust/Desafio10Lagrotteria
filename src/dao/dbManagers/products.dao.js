@@ -2,9 +2,12 @@ import {
     productsModel
 } from "./models/products.models.js";
 
+
+
+
 export default class Products {
     constructor() {
-        console.log("db trabajando ej products")
+    console.log("db trabajando en products")
     }
 
     getAll = async (req) => {
@@ -89,10 +92,9 @@ export default class Products {
         try {
             // Realizar la lógica para actualizar el stock del producto con el ID proporcionado
             const result = await productsModel.findByIdAndUpdate({_id: id}, { stock: newStockValue}, {new: true});
-            console.log('Resultado de la actualización:', result);
             return result;
         } catch (error) {
-            console.error(`Error al actualizar el stock del producto con ID ${id}:`, error);
+            req.logger.error(`Error al actualizar el stock del producto con ID ${id}:`, error);
             throw error; // Relanzar el error para que sea manejado en otro lugar si es necesario
         }
     };

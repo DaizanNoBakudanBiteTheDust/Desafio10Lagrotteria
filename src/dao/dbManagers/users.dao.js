@@ -26,19 +26,18 @@ export default class Users {
             const user = await usersModel.findById(userId);
     
             if (!user) {
-                console.error('Usuario no encontrado');
+                req.logger.error('Usuario no encontrado');
                 return;
             }
     
             if (!user.carts || user.carts.length === 0) {
                 // Si el usuario no tiene un carrito, crea uno nuevo
                 await usersModel.findByIdAndUpdate(userId, { $push: { carts: { cart: cartId } } }, { new: true });
-                console.log('Carrito agregado al usuario');
             } else {
-                console.log('El usuario ya tiene un carrito');
+                req.logger.warn('El usuario ya tiene un carrito');
             }
         } catch (error) {
-            console.error('Error al agregar carrito al usuario:', error);
+            req.logger.error('Error al agregar carrito al usuario:', error);
         }
     }
 } 

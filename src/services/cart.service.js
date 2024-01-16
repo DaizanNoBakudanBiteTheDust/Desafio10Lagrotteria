@@ -65,21 +65,17 @@ const purchase = async (cid, user) => {
 
     const cart = await cartRepo.findById(cid);
 
-    console.log(cart);
 
     // Transacciones
     if (!cart) {
-      console.log("carrito no encontrado")
+      req.logger.warn("carrito no encontrado")
     } else {
-      console.log("carrito encontrado")
+      console.info("carrito encontrado")
     }
 
     // Procesar productos
     let amount = 0;
     const outStock = [];
-
-
-    console.log("Estado del carrito antes de procesar productos:", cart);
 
 
     const productsToUpdate = [];
@@ -104,7 +100,7 @@ const purchase = async (cid, user) => {
             product,
             quantity
           });
-          console.log(`Product ${product._id} is out of stock.`);
+          console.warn(`Product ${product._id} is out of stock.`);
         }
     
     }));
@@ -136,7 +132,6 @@ const purchase = async (cid, user) => {
       html: formattedTicket // Puedes personalizar el formato del correo
     });
 
-    console.log(ticket)
 
     // Confirmar transacción
     await session.commitTransaction();
@@ -150,7 +145,7 @@ const purchase = async (cid, user) => {
     if (session) {
       await session.abortTransaction();
     }
-    console.log("Error durante la compra:", error);
+    req.logger.error("Error durante la compra:", error);
     throw error;
   } finally {
     if (session) {

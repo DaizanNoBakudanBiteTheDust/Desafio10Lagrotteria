@@ -1,38 +1,72 @@
-import winston from 'winston'
+import winston from 'winston';
+
+const Enviroment = 'development';
 
 const customLevelOptions = {
     levels: {
-        error: 0,
-        warning: 1,
-        info: 2,
-        debug: 3
+        fatal: 0,
+        error: 1,
+        warn: 2,
+        info: 3,
+        http: 4,
+        debug: 5
     },
     colors: {
+        fatal: 'red',
         error: 'red',
-        warning: 'yellow',
+        warn: 'yellow',
         info: 'green',
+        http: 'green',
         debug: 'blue'
     }
 };
 
-const logger = winston.createLogger({
-    levels: customLevelOptions.levels,
-    transports: [
-        new winston.transports.Console({
-            level: 'debug',
-            format: winston.format.combine(
-                winston.format.colorize({
-                    all: true,
-                    colors: customLevelOptions.colors
-                }),
-                winston.format.simple()
-            )
-        })
-    ]
-})
+
+let logger;
+
+if (Enviroment === 'production') {
+    logger = winston.createLogger({
+        levels: customLevelOptions.levels,
+        transports: [
+            new winston.transports.Console({
+                level: 'info',
+                format: winston.format.combine(
+                    winston.format.colorize({
+                        all: true,
+                        colors: customLevelOptions.colors
+                    }),
+                    winston.format.simple()
+                )
+            }),
+            new winston.transports.File({
+                filename: '../logs/errors.log',
+                level: 'error'
+            })
+        ]
+    });
+} else {
+    logger = winston.createLogger({
+        transports: [
+            new winston.transports.Console({
+                level: 'debug',
+                format: winston.format.combine(
+                    winston.format.colorize({
+                        all: true,
+                        colors: customLevelOptions.colors
+                    }),
+                    winston.format.simple()
+                )
+            }),
+            new winston.transports.File({
+                filename: 'logs/errors.log',
+                level: 'error'
+            })
+        ]
+    });
+}
 
 export const addLogger = (req, res, next) => {
     req.logger = logger;
     req.logger.info(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
     next();
-}
+};

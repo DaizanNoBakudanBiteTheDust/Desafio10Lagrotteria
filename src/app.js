@@ -26,7 +26,7 @@ import cartRouter from './routes/api/cart.router.js';
 import chatRouter from './routes/api/message.router.js';
 import sessionRouter from './routes/api/users.router.js';
 import viewsRouter from './routes/web/views.router.js';
-
+import { addLogger } from './utils/logger.js';
 
 //Managers para el socket
 
@@ -49,13 +49,14 @@ const fileStr = fileStore(session);
 // Crea server express
 const app = express();
 
+app.use(addLogger);
+
 // Conexion DB
 try {
         // string de Conexion
         await mongoose.connect(configs.mongoUrl);
-        console.log("conectado")
 } catch (error) {
-        console.log("conexion fallida")
+        console.error("conexion fallida")
 }
 
 
@@ -110,6 +111,17 @@ app.use('/api/chat', chatRouter);
 
 // Ruta Session
 app.use('/api/sessions', sessionRouter);
+
+app.get('/loggerTest', (req, res) =>{
+     //custom levels
+    req.logger.error('error');
+    req.logger.warn('warning');
+    req.logger.info('info');
+    req.logger.http('HTTP');
+    req.logger.debug('debug');
+
+    res.send({ result: 'ver errores' });
+})
 
 
 const server = app.listen(configs.port, () => console.log('listening en 8080'));

@@ -2,11 +2,8 @@
 
 async function addProduct(pid, cartId) {
     try {
-        console.log(cartId);
          // Realiza la solicitud al servidor para obtener el carrito
          const response = await fetch(`/api/carts/${cartId}`);
-
-         console.log(response);
 
          if (!response.ok) {
             
@@ -46,7 +43,7 @@ async function addProduct(pid, cartId) {
              body: JSON.stringify(cartData)
          }); 
          if (updateResponse.status === 200) {
-             console.log('Producto añadido al carrito', cartData);
+            req.logger.info('Producto añadido al carrito', cartData);
          };
 
          Toastify({
@@ -57,6 +54,6 @@ async function addProduct(pid, cartId) {
 
      
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
     }
   }

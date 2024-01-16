@@ -28,6 +28,6 @@ function purchaseCart() { // Recibe cartId como parámetro
           setInterval("location.reload()",10000);
     })
     .catch(error => {
-      console.log(error);
+      req.logger.error(error);
     });
   }

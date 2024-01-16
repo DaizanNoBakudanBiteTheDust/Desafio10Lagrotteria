@@ -19,7 +19,7 @@ class ProductManager {
             const products = await promises.readFile(this.path, 'utf-8');
             return JSON.parse(products);
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
             return [];
         }
     }
@@ -34,7 +34,6 @@ class ProductManager {
             const existingProduct = products.find((p) => p.id === producto.id);
             // verifica si existe
             if (existingProduct) {
-                console.log("El producto existe");
                 return null;
             }
             // se agrega el producto
@@ -45,7 +44,7 @@ class ProductManager {
             return producto;
 
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
             return null
         }
     }
@@ -59,7 +58,7 @@ class ProductManager {
         const indexProduct = products.findIndex(product => product.id === idProduct);
 
         if (indexProduct === -1) {
-            return console.log('Producto no encontrado');
+            return req.logger.warn('Producto no encontrado');
 
         } else {
             return products[indexProduct]
@@ -77,7 +76,7 @@ class ProductManager {
         const indexProduct = products.findIndex(product => product.id === idProduct);
 
         if (indexProduct === -1) {
-            return console.log('Producto no encontrado');
+            return req.logger.warn('Producto no encontrado');
 
         } else {
             // Elimina producto
@@ -85,7 +84,7 @@ class ProductManager {
 
             await promises.writeFile(this.path, JSON.stringify(products, null, 4));
 
-            console.log('Producto eliminado con éxito');
+            req.logger.info('Producto eliminado con éxito');
             return true;
         }
     }
@@ -97,7 +96,7 @@ class ProductManager {
         const indexProduct = products.findIndex(product => product.id === idProduct);
 
         if (indexProduct === -1) {
-            console.log("No existe el producto")
+            req.logger.warn("No existe el producto")
         } else {
             products[indexProduct] = {
                 ...products[indexProduct], // Copia todas las propiedades del producto existente

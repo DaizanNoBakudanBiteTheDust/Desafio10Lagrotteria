@@ -17,7 +17,7 @@ class cartManager {
             const cartProducts = await promises.readFile(this.path, 'utf-8');
             return JSON.parse(cartProducts) || [];
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
             return [];
         }
     }
@@ -32,7 +32,7 @@ class cartManager {
             const existingProduct = products.find((p) => p.id === producto.id);
             // verifica si existe
             if (existingProduct) {
-                console.log("El carro existe");
+                req.logger.warn("El carro existe");
                 return null;
             }
             // se agrega el producto
@@ -43,7 +43,7 @@ class cartManager {
             return producto;
 
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
             return null
         }
     }
@@ -57,7 +57,7 @@ class cartManager {
         const indexProduct = products.findIndex(product => product.id === idProduct);
 
         if (indexProduct === -1) {
-            return console.log('Producto no encontrado');
+            return req.logger.warn('Producto no encontrado');
 
         } else {
             return products[indexProduct]
@@ -73,7 +73,7 @@ class cartManager {
         const indexProduct = products.findIndex(product => product.id === idProduct);
 
         if (indexProduct === -1) {
-            console.log("No existe el producto")
+            req.logger.warn("No existe el producto")
         } else {
             products[indexProduct] = {
                 ...products[indexProduct], 

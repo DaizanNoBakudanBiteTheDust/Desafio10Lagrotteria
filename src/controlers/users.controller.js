@@ -56,7 +56,7 @@ const registerUser = async (req, res) => {
 
         res.status(201).json({ status: 'success', message: 'Usuario registrado exitosamente', user: result });
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
 
     }
 };
@@ -81,7 +81,6 @@ const loginUser = async (req, res) => {
         password
     } = req.body;
 
-    console.log(req.body)
 
     if (!email|| !password) {
         throw CustomError.createError({
@@ -118,7 +117,6 @@ const loginUser = async (req, res) => {
     } = userNew;
     const accessToken = generateToken(userResult);
 
-    console.log(accessToken, userNew)
 
     res.cookie('coderCookieToken', accessToken, {
         maxAge: 60 * 60 * 1000,
@@ -142,7 +140,7 @@ const userFailLogin = async (req, res) => {
 const userLogout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            console.error(err);
+            req.logger.error(err);
             return res.status(500).send('Error interno del servidor');
         }
         res.clearCookie('connect.sid');
@@ -153,7 +151,6 @@ const userLogout = (req, res) => {
 
 
 const getUserId = async (req, res) => {
-    console.log(req.params);
     res.send(req.params);
 };
 
@@ -192,7 +189,7 @@ const userGithubCallback = async (req, res) => {
             message: 'login success'
         })
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         res.status(500).json({
             status: 'error',
             message: 'Hubo un error al procesar la autenticación'
@@ -217,7 +214,7 @@ const getCurrentUser = (req, res) => {
         const User = new infoDto({first_name, last_name, age });
         res.status(200).json({ user: User });
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         res.status(500).json({ error: 'Error al obtener el usuario actual' });
     }
 };

@@ -13,7 +13,7 @@ export default class productsRepository {
             const result = await daoProducts.updateStock(id, newStockValue);
             return result;
         } catch (error) {
-            console.error(`Error al actualizar el stock del producto con ID ${id}:`, error);
+            req.logger.error(`Error al actualizar el stock del producto con ID ${id}:`, error);
             throw error; // Relanzar el error para que sea manejado en otro lugar si es necesario
         }
     };

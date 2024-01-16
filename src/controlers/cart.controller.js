@@ -63,12 +63,10 @@ const saveProductOnCart = async (req, res) => {
         }
 
         const products = cart.products;
-        console.log (products);
 
         // Buscar el producto en el carrito por el ID del producto
         const existingProduct = products.find(p => p.product._id.toString() === pid);
 
-        console.log(existingProduct)
         if (existingProduct) {
             // Si el producto ya existe en el carrito, incrementa la cantidad
             existingProduct.quantity += 1;
@@ -141,7 +139,6 @@ const deleteCartProductById = async (req, res) => {
             // Obtener el carrito por su ID
             const cart = await cartById({_id: cid});
 
-            console.log(cart);
             if (!cart) {
                 return res.status(404).json({
                     error: 'Carrito no encontrado'
@@ -150,7 +147,6 @@ const deleteCartProductById = async (req, res) => {
 
             const products = cart.products;
 
-            console.log(products);
     
             // Buscar el producto en el carrito por el ID del producto
             const existingProduct = products.find(p => p.product.toString() === pid);
@@ -188,7 +184,7 @@ const updateCart = async (req, res) => {
 
         // Actualiza el carrito con los cambios proporcionados
         const updatedCart = await cartUpdate(cid, updatedCartData);
-        console.log(updatedCart)
+        
         // Comprueba si el carrito se actualizó correctamente
         if (updatedCart) {
             // Status success y devuelve el carrito actualizado
@@ -338,7 +334,7 @@ const cartPurchase = async (req, res) => {
             
             res.send({ result });
         } catch (error) {
-                console.log('Error en la compra:', error);
+                req.logger.error('Error en la compra:', error);
                 res.status(500).send({ error: 'Error en la compra' });
         }
     }

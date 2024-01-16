@@ -54,8 +54,6 @@ const AdminAccess = (req, res, next) => {
 
     let user = decodedToken(token)
 
-    console.log(user)
-
     if (adminUserPredator.email && adminUserPredator.password) {
         next();
     } else {
@@ -92,7 +90,6 @@ router.get('/', privateAccess, async (req, res) => {
             userData = user._doc;
         }
 
-        console.log(userData)
         // Obtener todos los productos
         const allProducts = await prodManager.getAll(req);
 
@@ -102,7 +99,7 @@ router.get('/', privateAccess, async (req, res) => {
             products: allProducts
         });
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         res.status(500).send('Error interno del servidor');
     }
 });
@@ -133,8 +130,6 @@ router.get('/cart', privateAccess, async (req, res) => {
     }
 
     const products = transformedData;
-
-    console.log(products);
 
     res.render('cartId', {
         cartId,

@@ -13,16 +13,6 @@ export default class Messages {
     }
 
     save = async (message) => {
-/*
-        const existingProduct = await messagesModel.findOne({
-            code: product.code
-        });
-
-        if (existingProduct) {
-           console.log("producto existe con ese codigo");
-            };
-     */   
-        // se agrega el mensaje
 
         const result = await messagesModel.create(message);
 

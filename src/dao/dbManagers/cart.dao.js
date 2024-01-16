@@ -8,7 +8,6 @@
         getAll = async () => {
 
             const carts = await cartsModel.find().lean();
-            console.log(JSON.stringify(carts, null, '\t'));
             return carts;
         }
 
@@ -52,7 +51,7 @@
             const product = await cartsModel.findById(id);
 
             if (!product) {
-                console.log('producto no encontrado');
+                req.logger.console.warn();('producto no encontrado');
             }
         
             return product;
@@ -79,14 +78,10 @@
                 throw new Error('Carrito no encontrado');
               }
           
-              console.log("Estado del carrito antes de la actualización:", cart);
-          
               cart.products = []; // Asumiendo que hay una propiedad 'products' que contiene los productos del carrito
           
               // Actualizar el carrito usando la función update del model
               const updatedCart = await cart.save();
-          
-              console.log("Estado del carrito después de la actualización:", updatedCart);
           
               return { status: 200, message: 'Carrito vaciado exitosamente', cart: updatedCart };
           
