@@ -1,13 +1,12 @@
+import { logger } from "../../utils/logger.js";
 import {
     productsModel
 } from "./models/products.models.js";
 
 
-
-
 export default class Products {
     constructor() {
-    console.log("db trabajando en products")
+    logger.http("db trabajando en products")
     }
 
     getAll = async (req) => {

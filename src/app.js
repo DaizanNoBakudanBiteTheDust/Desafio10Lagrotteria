@@ -12,7 +12,7 @@ import fileStore from 'session-file-store';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import compression from 'express-compression';
-
+import winston from 'winston';
 
 //dependencias de ruta
 import {
@@ -26,7 +26,7 @@ import cartRouter from './routes/api/cart.router.js';
 import chatRouter from './routes/api/message.router.js';
 import sessionRouter from './routes/api/users.router.js';
 import viewsRouter from './routes/web/views.router.js';
-import { addLogger } from './utils/logger.js';
+import { addLogger, logger } from './utils/logger.js';
 
 //Managers para el socket
 
@@ -124,7 +124,7 @@ app.get('/loggerTest', (req, res) =>{
 })
 
 
-const server = app.listen(configs.port, () => console.log('listening en 8080'));
+const server = app.listen(configs.port, () => logger.http('listening en 8080'));
 
 // IO
 
